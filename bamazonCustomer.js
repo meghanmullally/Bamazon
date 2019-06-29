@@ -1,3 +1,4 @@
+var inquirer = require("inquirer");
 var mysql = require("mysql");
 
 var connection = mysql.createConnection({
@@ -17,6 +18,32 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
-  
+
+ // INQUIRER 
+
+inquirer.prompt([
+
+{
+  name: "whatID",
+  message: "What is the ID of the item you would like to purchase?",
+  type: "number"
+},
+
+{
+  name: "howMuch",
+  message: "How many would you like?",
+  type: "number"
+}
+
+]).then(function (response) {
+
+console.log(response.whatID.type);
+console.log("-------------");
+console.log(response.howMuch.type); 
+
+}) 
+
 });
+
+
 
