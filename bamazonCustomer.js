@@ -22,7 +22,7 @@ connection.connect(function(err) {
  // INQUIRER 
 
 inquirer.prompt([
-
+  
 {
   name: "whatID",
   message: "What is the ID of the item you would like to purchase?",
@@ -37,13 +37,25 @@ inquirer.prompt([
 
 ]).then(function (response) {
 
-console.log(response.whatID.type);
-console.log("-------------");
-console.log(response.howMuch.type); 
+console.table(response);
+
+
 
 }) 
 
 });
+
+
+// function readProducts() {
+//   console.log("Selecting all products...\n");
+//   connection.query("SELECT * FROM products", function (err, res) {
+//     if (err) throw err;
+//     // Log all results of the SELECT statement
+//     console.log(res);
+    
+//   });
+//   connection.end();
+// }
 
 
 
