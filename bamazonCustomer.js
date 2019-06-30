@@ -15,33 +15,48 @@ var connection = mysql.createConnection({
   database: "bamazon_DB"
 });
 
-connection.connect(function(err) {
+connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
 
- // INQUIRER 
+  // INQUIRER 
 
-inquirer.prompt([
-  
-{
-  name: "whatID",
-  message: "What is the ID of the item you would like to purchase?",
-  type: "number"
-},
+  inquirer.prompt([
 
-{
-  name: "howMuch",
-  message: "How many would you like?",
-  type: "number"
-}
+    {
+      name: "whatID",
+      message: "What is the ID of the item you would like to purchase?",
+      type: "number"
+    },
 
-]).then(function (response) {
+    {
+      name: "howMuch",
+      message: "How many would you like?",
+      type: "number"
+    }
 
-console.table(response);
+  ]).then(function (response) {
+
+    console.table(response);
+
+    if (stock_quantity !== "howmuch") {
+
+
+    } else {
+      //prevent order from going through 
+      // if not enough then console log 
+      console.log("Insufficient quantity!")
+    }
+
+  })
 
 
 
-}) 
+// Update SQL DB 
+// Total cost of order 
+
+
+
 
 });
 
@@ -52,10 +67,7 @@ console.table(response);
 //     if (err) throw err;
 //     // Log all results of the SELECT statement
 //     console.log(res);
-    
+
 //   });
 //   connection.end();
 // }
-
-
-
