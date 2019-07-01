@@ -18,37 +18,73 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
+  checkProducts();
+  start();
+});
 
+
+function start() {
   // INQUIRER 
-
-  inquirer.prompt([
-
-    {
+  inquirer.prompt([{
       name: "whatID",
-      message: "What is the ID of the item you would like to purchase?",
-      type: "number"
+      message: "What is the ID of the item you would like to purchase?"
+
     },
 
     {
       name: "howMuch",
-      message: "How many would you like?",
-      type: "number"
+      message: "How many would you like?"
     }
 
-  ]).then(function (response) {
+  ]).then(function (answer) {
+    // console.table(answer);
 
-    console.table(response);
+    var stockQ = "SELECT * FROM products WHERE ?";
 
-    if (stock_quantity !== "howmuch") {
+    connection.query(stockQ, {
+      item_id: answer.whatID
+    }, (err, data) => {
+      if (err) throw err;
+      console.table(data);
 
+      if (answer.howMuch > data[0].stock_quantity) {
+        console.log("Insufficient quantity!");
+      } else {
+        var stockUpdate = data[0].stock_quantity - parseInt(answer.howMuch);
+        connection.query("UPDATE products SET ? WHERE ?", [
 
-    } else {
-      //prevent order from going through 
-      // if not enough then console log 
-      console.log("Insufficient quantity!")
-    }
+            {
+              stock_quantity: stockUpdate
+            },
+
+            {
+              item_id: answer.whatID
+            }
+
+          ],
+
+        );
+        console.table(data);
+        checkProducts();
+
+      }
+
+    })
 
   })
+
+};
+
+function checkProducts() {
+
+  connection.query("SELECT * FROM products", function (err, data) {
+    if (err) throw err;
+    console.log("\n");
+    console.table(data);
+  })
+
+};
+
 
 
 
@@ -57,8 +93,6 @@ connection.connect(function (err) {
 
 
 
-
-});
 
 
 // function readProducts() {
