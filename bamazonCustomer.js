@@ -50,7 +50,11 @@ function start() {
       if (answer.howMuch > data[0].stock_quantity) {
         console.log("Insufficient quantity!");
       } else {
+         //  stock update after user input 
         var stockUpdate = data[0].stock_quantity - parseInt(answer.howMuch);
+        // cost of product after user input with 15% tax
+        var stockPrice =( data[0].price * parseInt(answer.howMuch) * .15) + data[0].price * parseInt(answer.howMuch);
+        console.log("Total purchase: $" + stockPrice);
         connection.query("UPDATE products SET ? WHERE ?", [
 
             {
@@ -64,9 +68,9 @@ function start() {
           ],
 
         );
-        console.table(data);
+        // console.table(data);
         checkProducts();
-
+        connection.end();
       }
 
     })
@@ -84,24 +88,3 @@ function checkProducts() {
   })
 
 };
-
-
-
-
-// Update SQL DB 
-// Total cost of order 
-
-
-
-
-
-// function readProducts() {
-//   console.log("Selecting all products...\n");
-//   connection.query("SELECT * FROM products", function (err, res) {
-//     if (err) throw err;
-//     // Log all results of the SELECT statement
-//     console.log(res);
-
-//   });
-//   connection.end();
-// }
