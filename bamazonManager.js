@@ -22,30 +22,60 @@ connection.connect(function (err) {
 });
 
 function startManager() {
-inquirer.prompt([
-  // list of menu options 
-  {
-    name: "options",
-    type: "list",
-    message: "Menu Options",
-    choices: [
-      "View Product for Sale",
-      "View Low Inventory",
-      "Add to Inventory",
-      "Add New Product"
-    ]
-  }
-]).then(function (response) {
-  // if a manager selects VIEW PRODUCTS FOR SALE 
+  inquirer.prompt([
+    // list of menu options 
+    {
+      name: "options",
+      type: "list",
+      message: "Menu Options",
+      choices: [
+        "View Product for Sale",
+        "View Low Inventory",
+        "Add to Inventory",
+        "Add New Product"
+      ]
+    }
+  ]).then(function (response) {
+
+    switch (response.options) {
+      case "View Product for Sale":
+        viewSale();
+        break;
+      case "View Low Inventory":
+        lowInv();
+        break;
+      case "Add to Inventory":
+        addInv();
+        break;
+      case "Add New Product":
+        addNewProduct();
+        break;
+
+      default:
+        break;
+    }
+
+    // if a manager selects VIEW PRODUCTS FOR SALE 
+
+    function viewSale() {
+      console.log("view product....")
+    }
+
+    // if a manager selects VIEW LOW INVENTORY
+    function lowInv() {
+      console.log("view low inventory....")
+    }
+    // if a manager selects ADD TO INVENTORY 
+    function addInv() {
+      console.log("add to inventory....")
+    }
+    // if a manager selects ADD NEW PRODUCT 
+
+    function addNewProduct() {
+      console.log("add new product....")
+    }
 
 
+  })
 
-
-  // if a manager selects VIEW LOW INVENTORY
-
-  // if a manager selects ADD TO INVENTORY 
-
-  // if a manager selects ADD NEW PRODUCT 
-})
-
-}; 
+};
