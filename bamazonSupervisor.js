@@ -18,5 +18,44 @@ var connection = mysql.createConnection({
 connection.connect(function (err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
-  
+  startSuper();
 });
+
+
+function startSuper() {
+
+inquirer.prompt([
+{
+  name: "viewProduct",
+  type: "list",
+  choices: [
+    "View Product Sales bye Department",
+    "Create New Department"
+  ]
+}
+]).then(function(response) {
+
+switch (key) {
+  case value:
+    
+    break;
+
+  default:
+    break;
+}
+
+
+
+
+
+})
+
+
+}
+
+// VIEW PRODUCT SALES BY DEP
+
+
+
+
+// CREATE NEW DEP 
