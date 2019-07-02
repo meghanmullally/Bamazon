@@ -162,10 +162,10 @@ function startManager() {
         ]];
 
         var query = "INSERT INTO products  (product_name, department_name, price, stock_quantity) VALUES ?";
-        connection.query(query, [productInput], function(err,data){
+        connection.query(query, [productInput], function(err){
           if (err) throw err;
 
-          console.log(data);
+          // console.log(data);
          })
           viewSale();
         })
