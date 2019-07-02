@@ -46,6 +46,9 @@ function startSuper() {
     }
   });
 
+    // function startSuper end }
+}
+
   // VIEW PRODUCT SALES BY DEP
   function salesByDep() {
     console.log("loading product sales...");
@@ -85,14 +88,13 @@ function startSuper() {
 
         // console.log(data);
       })
-      salesByDep();
+      // salesByDep();
 
     })
-    
-// end } for newDep()
+
+// connection.end();
+
+    // end } for newDep()
   };
 
 
-
-    // function startSuper end }
-  }
