@@ -58,22 +58,76 @@ function startManager() {
     // if a manager selects VIEW PRODUCTS FOR SALE 
 
     function viewSale() {
-      console.log("view product....")
+      // console.log("view product....")
+
+      connection.query("SELECT * FROM products", (err, data) => {
+        if (err) throw err;
+        console.table(data);
+        connection.end();
+      })
     }
+
+    //TODO: COME BACK TO THIS ONE LATERRRRRRRRR 
 
     // if a manager selects VIEW LOW INVENTORY
     function lowInv() {
-      console.log("view low inventory....")
+      // console.log("view low inventory....")
+      connection.query("SELECT stock_quantity, COUNT(stock_quantity) FROM products GROUP BY stock_quantity HAVING COUNT(stock_quantity) < 5 ORDER BY COUNT(stock_quantity) DESC", (err, data) => {
+        if (err) throw err;
+        console.table(data);
+      })
     }
     // if a manager selects ADD TO INVENTORY 
     function addInv() {
-      console.log("add to inventory....")
+      // console.log("add to inventory....")
+      inquirer.prompt([{
+          name: "whichID",
+          type: 'input',
+          message: "Which ID would you like to add to?"
+
+        },
+        {
+          name: "howMuchAdd",
+          type: "number",
+          message: "How much would you like to add?"
+        }
+      ]).then(function (answer) {
+
+        var stockQ = "SELECT * FROM products WHERE ?";
+
+        connection.query(stockQ, {item_id: answer.whichID
+        }, (err, data) => {
+          if (err) throw err;
+          // console.table(data);
+         
+       
+
+        var addInventory = data[0].stock_quantity + parseInt(answer.howMuchAdd);
+
+        connection.query("UPDATE products SET ? WHERE ?",  [
+
+
+          {
+            stock_quantity: addInventory
+          },
+          {
+            item_id: answer.whichID
+          }
+
+        ])
+        viewSale();
+      })
+
+    });
+  
+
     }
     // if a manager selects ADD NEW PRODUCT 
 
     function addNewProduct() {
       console.log("add new product....")
     }
+
 
 
   })
