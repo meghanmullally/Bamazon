@@ -54,7 +54,9 @@ function startManager() {
       default:
         break;
     }
-
+  });
+}
+    
     // if a manager selects VIEW PRODUCTS FOR SALE 
 
     function viewSale() {
@@ -149,15 +151,26 @@ function startManager() {
           message: "What is the stock quantity of the new product?"
         },
 
-      ])
+      ]).then(function(answer) {
+        
+        var productInput = 
+        [
+            answer.newProductName,
+            answer.newDepName,
+            parseInt(answer.newProductPrice),
+            parseInt(answer.newProductStockQ)
+        ];
 
-    }
+        connection.query("INSERT INTO products  (product_name, department_name, price, stock_quantity) VALUES ?", [productInput], function(err){
+          if (err) throw err;
+         })
+          viewSale();
+        })
+  
+      }
+    
+//     }
+  
+//   })
 
-
-    INSERT INTO products(product_name, department_name, price, stock_quantity)
-    VALUES("Tablet", "Electronics", 249.45, 15);
-
-
-  })
-
-};
+// };
