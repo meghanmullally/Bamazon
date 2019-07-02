@@ -95,39 +95,67 @@ function startManager() {
 
         var stockQ = "SELECT * FROM products WHERE ?";
 
-        connection.query(stockQ, {item_id: answer.whichID
+        connection.query(stockQ, {
+          item_id: answer.whichID
         }, (err, data) => {
           if (err) throw err;
           // console.table(data);
-         
-       
-
-        var addInventory = data[0].stock_quantity + parseInt(answer.howMuchAdd);
-
-        connection.query("UPDATE products SET ? WHERE ?",  [
 
 
-          {
-            stock_quantity: addInventory
-          },
-          {
-            item_id: answer.whichID
-          }
 
-        ])
-        viewSale();
-      })
+          var addInventory = data[0].stock_quantity + parseInt(answer.howMuchAdd);
 
-    });
-  
+          connection.query("UPDATE products SET ? WHERE ?", [
+
+
+            {
+              stock_quantity: addInventory
+            },
+            {
+              item_id: answer.whichID
+            }
+
+          ])
+          viewSale();
+        })
+
+      });
+
 
     }
     // if a manager selects ADD NEW PRODUCT 
 
     function addNewProduct() {
-      console.log("add new product....")
+      // console.log("add new product....")
+      inquirer.prompt([
+        {
+          name: "newProductName",
+          type: "input",
+          message: "What is the name of the new product?"
+        },
+        {
+          name: "newDepName",
+          type: "input",
+          message: "What is the department name of the new product?"
+        },
+        {
+          name: "newProductPrice",
+          type: "input",
+          message: "What is the price of the new product?"
+        },
+        {
+          name: "newProductStockQ",
+          type: "input",
+          message: "What is the stock quantity of the new product?"
+        },
+
+      ])
+
     }
 
+
+    INSERT INTO products(product_name, department_name, price, stock_quantity)
+    VALUES("Tablet", "Electronics", 249.45, 15);
 
 
   })
