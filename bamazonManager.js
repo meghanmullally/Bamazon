@@ -153,16 +153,19 @@ function startManager() {
 
       ]).then(function(answer) {
         
-        var productInput = 
+        var productInput = [
         [
             answer.newProductName,
             answer.newDepName,
             parseInt(answer.newProductPrice),
             parseInt(answer.newProductStockQ)
-        ];
+        ]];
 
-        connection.query("INSERT INTO products  (product_name, department_name, price, stock_quantity) VALUES ?", [productInput], function(err){
+        var query = "INSERT INTO products  (product_name, department_name, price, stock_quantity) VALUES ?";
+        connection.query(query, [productInput], function(err,data){
           if (err) throw err;
+
+          console.log(data);
          })
           viewSale();
         })
