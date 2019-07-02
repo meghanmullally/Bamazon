@@ -7,10 +7,19 @@ USE bamazon_DB;
 CREATE TABLE products (
 item_id INT NOT NULL AUTO_INCREMENT,
 product_name VARCHAR(50) NOT NULL,
+product_sales INT(10),
 department_name VARCHAR(50) NOT NULL,
 price INT(10),
 stock_quantity INT(10),
 PRIMARY KEY (item_id)
+);
+
+
+CREATE TABLE departments (
+  department_id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(50) NOT NULL,
+  over_head_costs INT(10),
+  PRIMARY KEY (department_id)
 );
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)

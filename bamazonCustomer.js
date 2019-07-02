@@ -45,7 +45,7 @@ function start() {
       item_id: answer.whatID
     }, (err, data) => {
       if (err) throw err;
-      console.table(data);
+      // console.table(data);
 
       if (answer.howMuch > data[0].stock_quantity) {
         console.log("Insufficient quantity!");
@@ -53,8 +53,9 @@ function start() {
          //  stock update after user input 
         var stockUpdate = data[0].stock_quantity - parseInt(answer.howMuch);
         // cost of product after user input with 15% tax
-        var stockPrice =( data[0].price * parseInt(answer.howMuch) * .15) + data[0].price * parseInt(answer.howMuch);
+        var stockPrice =data[0].price * parseInt(answer.howMuch);
         console.log("Total purchase: $" + stockPrice);
+
         connection.query("UPDATE products SET ? WHERE ?", [
 
             {
@@ -63,6 +64,10 @@ function start() {
 
             {
               item_id: answer.whatID
+            },
+            //product sales 
+            {
+              product_sales: stockPrice
             }
 
           ],
@@ -81,7 +86,7 @@ function start() {
 
 function checkProducts() {
 
-  connection.query("SELECT * FROM products", function (err, data) {
+  connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products", function (err, data) {
     if (err) throw err;
     console.log("\n");
     console.table(data);
