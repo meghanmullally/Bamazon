@@ -46,55 +46,55 @@ function startSuper() {
     }
   });
 
-    // function startSuper end }
+  // function startSuper end }
 }
 
-  // VIEW PRODUCT SALES BY DEP
-  function salesByDep() {
-    console.log("loading product sales...");
+// VIEW PRODUCT SALES BY DEP
+function salesByDep() {
+  console.log("loading product sales...");
 
-  }
-
-
-  // CREATE NEW DEP 
-  function newDep() {
-    // console.log("loading new department...");
-    inquirer.prompt([{
-        name: "newDepName",
-        type: "input",
-        message: "What is the name of the new Department?"
-      },
-      {
-        name: "overHead",
-        type: 'input',
-        message: "How much overhead?"
-      }
-
-    ]).then(function (answer) {
-
-      var depInput = [
-        [
-
-          answer.newDepName,
-          answer.overHead
+}
 
 
-        ]
+// CREATE NEW DEP 
+function newDep() {
+  // console.log("loading new department...");
+  inquirer.prompt([{
+      name: "newDepName",
+      type: "input",
+      message: "What is the name of the new Department?"
+    },
+    {
+      name: "overHead",
+      type: 'input',
+      message: "How much overhead?"
+    }
+
+  ]).then(function (answer) {
+
+    var depInput = [
+      [
+
+        answer.newDepName,
+        answer.overHead
+
+
       ]
+    ]
 
-      var queryDep = "INSERT INTO departments  (department_name, over_head_costs) VALUES ?";
-      connection.query(queryDep, [depInput], function (err) {
-        if (err) throw err;
+    var queryDep = "INSERT INTO departments  (department_name, over_head_costs) VALUES ?";
+    connection.query(queryDep, [depInput], function (err) {
+      if (err) throw err;
 
-        // console.log(data);
-      })
-      // salesByDep();
-
+      // console.log(data);
     })
+    // salesByDep();
 
-// connection.end();
+  })
 
-    // end } for newDep()
-  };
+  // connection.end();
+
+  // end } for newDep()
+};
 
 
