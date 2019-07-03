@@ -32,7 +32,8 @@ function startManager() {
         "View Product for Sale",
         "View Low Inventory",
         "Add to Inventory",
-        "Add New Product"
+        "Add New Product",
+        "Exit"
       ]
     }
   ]).then(function (response) {
@@ -50,128 +51,132 @@ function startManager() {
       case "Add New Product":
         addNewProduct();
         break;
+      case "Exit":
+        console.log("Good Bye.");
+        connection.end();
+        break;
 
       default:
         break;
     }
   });
 }
-    
-    // if a manager selects VIEW PRODUCTS FOR SALE 
 
-    function viewSale() {
-      // console.log("view product....")
+// if a manager selects VIEW PRODUCTS FOR SALE 
 
-      connection.query("SELECT * FROM products", (err, data) => {
-        if (err) throw err;
-        console.table(data);
-        connection.end();
-      })
+function viewSale() {
+  // console.log("view product....")
+
+  connection.query("SELECT * FROM products", (err, data) => {
+    if (err) throw err;
+    console.table(data);
+    connection.end();
+  })
+}
+
+// if a manager selects VIEW LOW INVENTORY
+function lowInv() {
+  // console.log("view low inventory....")
+  connection.query("SELECT * FROM products WHERE stock_quantity < 5 ", (err, data) => {
+    if (err) throw err;
+    console.table(data);
+  })
+}
+// if a manager selects ADD TO INVENTORY 
+function addInv() {
+  // console.log("add to inventory....")
+  inquirer.prompt([{
+      name: "whichID",
+      type: 'input',
+      message: "Which ID would you like to add to?"
+
+    },
+    {
+      name: "howMuchAdd",
+      type: "number",
+      message: "How much would you like to add?"
     }
+  ]).then(function (answer) {
 
-    // if a manager selects VIEW LOW INVENTORY
-    function lowInv() {
-      // console.log("view low inventory....")
-      connection.query("SELECT * FROM products WHERE stock_quantity < 5 ", (err, data) => {
-        if (err) throw err;
-        console.table(data);
-      })
-    }
-    // if a manager selects ADD TO INVENTORY 
-    function addInv() {
-      // console.log("add to inventory....")
-      inquirer.prompt([{
-          name: "whichID",
-          type: 'input',
-          message: "Which ID would you like to add to?"
+    var stockQ = "SELECT * FROM products WHERE ?";
 
+    connection.query(stockQ, {
+      item_id: answer.whichID
+    }, (err, data) => {
+      if (err) throw err;
+      // console.table(data);
+
+
+
+      var addInventory = data[0].stock_quantity + parseInt(answer.howMuchAdd);
+
+      connection.query("UPDATE products SET ? WHERE ?", [
+
+
+        {
+          stock_quantity: addInventory
         },
         {
-          name: "howMuchAdd",
-          type: "number",
-          message: "How much would you like to add?"
-        }
-      ]).then(function (answer) {
-
-        var stockQ = "SELECT * FROM products WHERE ?";
-
-        connection.query(stockQ, {
           item_id: answer.whichID
-        }, (err, data) => {
-          if (err) throw err;
-          // console.table(data);
+        }
+
+      ])
+      viewSale();
+    })
+
+  });
 
 
+}
+// if a manager selects ADD NEW PRODUCT 
 
-          var addInventory = data[0].stock_quantity + parseInt(answer.howMuchAdd);
+function addNewProduct() {
+  // console.log("add new product....")
+  inquirer.prompt([{
+      name: "newProductName",
+      type: "input",
+      message: "What is the name of the new product?"
+    },
+    {
+      name: "newDepName",
+      type: "input",
+      message: "What is the department name of the new product?"
+    },
+    {
+      name: "newProductPrice",
+      type: "input",
+      message: "What is the price of the new product?"
+    },
+    {
+      name: "newProductStockQ",
+      type: "input",
+      message: "What is the stock quantity of the new product?"
+    },
 
-          connection.query("UPDATE products SET ? WHERE ?", [
+  ]).then(function (answer) {
 
+    var productInput = [
+      [
+        answer.newProductName,
+        answer.newDepName,
+        parseInt(answer.newProductPrice),
+        parseInt(answer.newProductStockQ)
+      ]
+    ];
 
-            {
-              stock_quantity: addInventory
-            },
-            {
-              item_id: answer.whichID
-            }
+    var query = "INSERT INTO products  (product_name, department_name, price, stock_quantity) VALUES ?";
+    connection.query(query, [productInput], function (err) {
+      if (err) throw err;
 
-          ])
-          viewSale();
-        })
+      // console.log(data);
+    })
+    viewSale();
+  })
 
-      });
+}
 
-
-    }
-    // if a manager selects ADD NEW PRODUCT 
-
-    function addNewProduct() {
-      // console.log("add new product....")
-      inquirer.prompt([
-        {
-          name: "newProductName",
-          type: "input",
-          message: "What is the name of the new product?"
-        },
-        {
-          name: "newDepName",
-          type: "input",
-          message: "What is the department name of the new product?"
-        },
-        {
-          name: "newProductPrice",
-          type: "input",
-          message: "What is the price of the new product?"
-        },
-        {
-          name: "newProductStockQ",
-          type: "input",
-          message: "What is the stock quantity of the new product?"
-        },
-
-      ]).then(function(answer) {
-        
-        var productInput = [
-        [
-            answer.newProductName,
-            answer.newDepName,
-            parseInt(answer.newProductPrice),
-            parseInt(answer.newProductStockQ)
-        ]];
-
-        var query = "INSERT INTO products  (product_name, department_name, price, stock_quantity) VALUES ?";
-        connection.query(query, [productInput], function(err){
-          if (err) throw err;
-
-          // console.log(data);
-         })
-          viewSale();
-        })
-  
-      }
-    
 //     }
-  
+
 //   })
 
 // };
