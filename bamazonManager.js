@@ -69,12 +69,10 @@ function startManager() {
       })
     }
 
-    //TODO: COME BACK TO THIS ONE LATERRRRRRRRR 
-
     // if a manager selects VIEW LOW INVENTORY
     function lowInv() {
       // console.log("view low inventory....")
-      connection.query("SELECT stock_quantity, COUNT(stock_quantity) FROM products GROUP BY stock_quantity HAVING COUNT(stock_quantity) < 5 ORDER BY COUNT(stock_quantity) DESC", (err, data) => {
+      connection.query("SELECT * FROM products WHERE stock_quantity < 5 ", (err, data) => {
         if (err) throw err;
         console.table(data);
       })
