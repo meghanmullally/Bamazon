@@ -86,7 +86,7 @@ function start() {
 
 function checkProducts() {
 
-  connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products", function (err, data) {
+  connection.query("SELECT item_id, product_name, price FROM products", function (err, data) {
     if (err) throw err;
     console.log("\n");
     console.table(data);
