@@ -42,11 +42,11 @@ function startSuper() {
         newDep();
         break;
 
-        case "Exit":
-          console.log("Goodbye.");
-          connection.end();
-          break;
-  
+      case "Exit":
+        console.log("Goodbye.");
+        connection.end();
+        break;
+
       default:
         break;
     }
@@ -59,14 +59,26 @@ function startSuper() {
 function salesByDep() {
   console.log("loading product sales...");
 
-inquirer.prompt([
-{
-
-},
+// join department and products 
+// table needs to have depid, depName, overhead, productSales and totalProfits 
 
 
+var joinQuery = "SELECT department_id, departments.department_name, over_head_costs," 
+//The total_profit column should be calculated on the fly using the difference between over_head_costs and product_sales.
++ "SUM(product_sales) AS product_sales,"
++ "SUM(product_sales) - over_head_costs AS total_profit ";
 
-])
+joinQuery += "FROM departments INNER JOIN products ";
+joinQuery += "ON departments.department_name = products.department_name ";
+joinQuery += "GROUP BY department_id";
+
+connection.query(joinQuery, (err, res) => {
+  if (err) throw err;
+  console.table(res);
+
+startSuper();
+
+});
 
 
 }
@@ -100,7 +112,7 @@ function newDep() {
     connection.query(queryDep, [depInput], function (err, data) {
       if (err) throw err;
 
-     console.table(data);
+      console.table(data);
     })
     // salesByDep();
 
