@@ -29,7 +29,8 @@ function startSuper() {
     type: "list",
     choices: [
       "View Product Sales by Department",
-      "Create New Department"
+      "Create New Department",
+      "Exit"
     ]
   }]).then(function (response) {
 
@@ -41,6 +42,11 @@ function startSuper() {
         newDep();
         break;
 
+        case "Exit":
+          console.log("Goodbye.");
+          connection.end();
+          break;
+  
       default:
         break;
     }
@@ -52,6 +58,16 @@ function startSuper() {
 // VIEW PRODUCT SALES BY DEP
 function salesByDep() {
   console.log("loading product sales...");
+
+inquirer.prompt([
+{
+
+},
+
+
+
+])
+
 
 }
 
@@ -74,19 +90,17 @@ function newDep() {
 
     var depInput = [
       [
-
         answer.newDepName,
         answer.overHead
-
 
       ]
     ]
 
     var queryDep = "INSERT INTO departments  (department_name, over_head_costs) VALUES ?";
-    connection.query(queryDep, [depInput], function (err) {
+    connection.query(queryDep, [depInput], function (err, data) {
       if (err) throw err;
 
-      // console.log(data);
+     console.table(data);
     })
     // salesByDep();
 
@@ -96,5 +110,3 @@ function newDep() {
 
   // end } for newDep()
 };
-
-
