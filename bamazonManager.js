@@ -52,7 +52,7 @@ function startManager() {
         addNewProduct();
         break;
       case "Exit":
-        console.log("Good Bye.");
+        console.log("Goodbye.");
         connection.end();
         break;
 
