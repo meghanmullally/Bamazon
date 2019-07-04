@@ -57,28 +57,28 @@ function startSuper() {
 
 // VIEW PRODUCT SALES BY DEP
 function salesByDep() {
-  console.log("loading product sales...");
+  // console.log("loading product sales...");
 
-// join department and products 
-// table needs to have depid, depName, overhead, productSales and totalProfits 
+  // join department and products 
+  // table needs to have depid, depName, overhead, productSales and totalProfits 
 
 
-var joinQuery = "SELECT department_id, departments.department_name, over_head_costs," 
-//The total_profit column should be calculated on the fly using the difference between over_head_costs and product_sales.
-+ "SUM(product_sales) AS product_sales,"
-+ "SUM(product_sales) - over_head_costs AS total_profit ";
+connection.query(`SELECT departments.department_id AS 'Department ID', 
+departments.department_name AS 'Department Name', 
+departments.over_head_costs as 'Overhead Costs', 
+SUM(products.product_sales) AS 'Product Sales', 
+(SUM(products.product_sales) - departments.over_head_costs) AS 'Total Profit'  
+FROM departments
+LEFT JOIN products on products.department_name=departments.department_name
+GROUP BY departments.department_name, departments.department_id, departments.over_head_costs
+ORDER BY departments.department_id ASC`, (err, res) => {
+    if (err) throw err;
+    console.log('\n ----------------------------------------------------- \n');
+    console.table(res);
 
-joinQuery += "FROM departments INNER JOIN products ";
-joinQuery += "ON departments.department_name = products.department_name ";
-joinQuery += "GROUP BY department_id";
+    startSuper();
 
-connection.query(joinQuery, (err, res) => {
-  if (err) throw err;
-  console.table(res);
-
-startSuper();
-
-});
+  });
 
 
 }
@@ -95,7 +95,14 @@ function newDep() {
     {
       name: "overHead",
       type: 'input',
-      message: "How much overhead?"
+      message: "How much overhead?",
+      default: 0
+    }, 
+    {
+      name: "prodSales",
+      type: 'input',
+      message: "Product Sales: ",
+      default: 0
     }
 
   ]).then(function (answer) {
@@ -103,12 +110,12 @@ function newDep() {
     var depInput = [
       [
         answer.newDepName,
-        answer.overHead
-
+        answer.overHead,
+        answer.prodSales
       ]
     ]
 
-    var queryDep = "INSERT INTO departments  (department_name, over_head_costs) VALUES ?";
+    var queryDep = "INSERT INTO departments (department_name, over_head_costs) VALUES ?";
     connection.query(queryDep, [depInput], function (err, data) {
       if (err) throw err;
 

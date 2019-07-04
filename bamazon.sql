@@ -14,13 +14,13 @@ stock_quantity INT(10),
 PRIMARY KEY (item_id)
 );
 
-
 CREATE TABLE departments (
   department_id INT NOT NULL AUTO_INCREMENT,
   department_name VARCHAR(50) NOT NULL,
   over_head_costs INT(10),
   PRIMARY KEY (department_id)
 );
+
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Tablet", "Electronics", 249.45, 15);
@@ -53,3 +53,20 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Printer Paper", "Arts, Crafts & Sewing", 15.89, 32);
 
 SELECT * FROM products; 
+
+
+-- department 
+INSERT INTO departments (department_name, over_head_costs)
+VALUES ("Clothing", 3000);
+
+SELECT * FROM departments;
+
+-- JOINING Department and Products 
+
+SELECT department_id, departments.department_name, over_head_costs, 
+SUM(product_sales) AS product_sales,
+SUM(product_sales) - over_head_costs AS total_profit 
+FROM departments 
+INNER JOIN products ON departments.department_name = products.department_name
+GROUP BY departments.department_id;
+
