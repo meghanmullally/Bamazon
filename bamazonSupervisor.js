@@ -96,14 +96,14 @@ function newDep() {
       name: "overHead",
       type: 'input',
       message: "How much overhead?",
-      default: 0
+      // default: 0
     }, 
-    {
-      name: "prodSales",
-      type: 'input',
-      message: "Product Sales: ",
-      default: 0
-    }
+    // {
+    //   name: "prodSales",
+    //   type: 'input',
+    //   message: "Product Sales: ",
+    //   default: 0
+    // }
 
   ]).then(function (answer) {
 
@@ -111,7 +111,7 @@ function newDep() {
       [
         answer.newDepName,
         answer.overHead,
-        answer.prodSales
+        // answer.prodSales
       ]
     ]
 
@@ -119,7 +119,8 @@ function newDep() {
     connection.query(queryDep, [depInput], function (err, data) {
       if (err) throw err;
 
-      console.table(data);
+      console.log(`Department Added Successfully!`);
+      console.table(data.depInput);
     })
     // salesByDep();
 
