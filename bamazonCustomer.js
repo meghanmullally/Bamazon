@@ -52,22 +52,24 @@ function start() {
       } else {
         //  stock update after user input 
         var stockUpdate = data[0].stock_quantity - parseInt(answer.howMuch);
-        // cost of product after user input with 15% tax
-        var stockPrice = data[0].price * parseInt(answer.howMuch);
+        
+        var stockPrice = data[0].product_sales + (data[0].price * parseInt(answer.howMuch));
         console.log("Total purchase: $" + stockPrice);
+
 
         connection.query("UPDATE products SET ? WHERE ?", [
 
             {
               stock_quantity: stockUpdate
             },
-            {
-              item_id: answer.whatID
-            },
             //product sales 
             {
               product_sales: stockPrice
+            },
+            {
+              item_id: answer.whatID
             }
+            
 
           ],
 
