@@ -23,6 +23,15 @@ This is an Amazon-like storefront created with MySQL and NodeJS. The app will ta
 
 - inquirer
 
+
+### Image Demo 
+
+![Customer](https://github.com/meghanmullally/Bamazon/blob/master/assets/images/customer.png?raw=true)
+![Manager Example](https://github.com/meghanmullally/Bamazon/blob/master/assets/images/manager1.png?raw=true)
+![Manager Example](https://github.com/meghanmullally/Bamazon/blob/master/assets/images/manager2.png?raw=true)
+
+
+
 ### Author 
 
 Meghan Mullally
